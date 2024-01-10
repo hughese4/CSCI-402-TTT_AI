@@ -9,12 +9,10 @@ public class TTT_AI {
         System.out.println("This AI is unbeatable, so good luck!");
         System.out.println("Would you like Tbot to play against you or another bot?");
         
-        
-
         boolean cont = true;
         // input checking, figure out how to handle all bad inputs later
         while (cont) {
-            System.out.println("Enter 1 for Tbot or 2 for another bot");
+            System.out.println("Enter 1 to play against Tbot or 2 for bot v bot");
             int choice = sc.nextInt();
 
             if (choice == 1) {
@@ -37,11 +35,6 @@ public class TTT_AI {
         return null;
     }
 
-    public void testBoard(){
-        Board board = new Board(3);
-        board.printBoard();
-    }
-
     public String flipCoin() {
         // Create a Random object
         Random random = new Random();
@@ -60,10 +53,20 @@ public class TTT_AI {
     }
 
     // Gameplay loop
-    public void playGame() {
+    public void playGame(String typeGame) {
         Board board = new Board(3);
         MoveLogic moveLogic = new MoveLogic();
+        TTT_AI ttt = new TTT_AI();
+        
+        String coinResult = ttt.flipCoin();
 
+        // game type
+        if (typeGame.equals("bot")) {
+            moveLogic.botvBot(coinResult);
+        } else {
+            moveLogic.playervBot(coinResult);
+        }
+        
         // initialize and display board
         board.printBoard();
         int[] posLeft = {0, 1, 2, 3, 4, 5, 6, 7, 8};
@@ -83,7 +86,7 @@ public class TTT_AI {
 
     public static void main(String[] args) {
         TTT_AI ttt = new TTT_AI();
-        ttt.intro();
-        ttt.testBoard();
+        String typeGame = ttt.intro();
+        
     }
 }

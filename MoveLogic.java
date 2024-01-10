@@ -30,4 +30,23 @@ public class MoveLogic {
         }
         return 0;
     }
+
+    public void botvBot(String coinflip) {
+        System.out.println("inside botvbot");
+        if (coinflip.equals("heads")) {
+            System.out.println("Bot 1 will go first");
+        } else {
+            System.out.println("Bot 2 will go first");
+        }
+    }
+
+    public void playervBot(String coinflip) {
+        if (coinflip.equals("heads")) {
+            System.out.println("Coin landed on heads! Player will go first");
+        } else {
+            System.out.println("Coind landed on tails! Tbot will go first");
+        }
+
+        
+    }
 }
