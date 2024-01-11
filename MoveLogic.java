@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class MoveLogic {
-    
-    public int randomMove(int[] posLeft) {
+   
+    public int randomBotMove(int[] posLeft) {
         // Create a Random object
         Random random = new Random();
 
@@ -31,22 +31,37 @@ public class MoveLogic {
         return 0;
     }
 
-    public void botvBot(String coinflip) {
+    // made by copilot
+    public int[] updatePosLeft(int[] posLeft, int move) {
+        int[] updatedPosLeft = new int[posLeft.length - 1];
+        int index = 0;
+        for (int i = 0; i < posLeft.length; i++) {
+            if (posLeft[i] != move) {
+                updatedPosLeft[index] = posLeft[i];
+                index++;
+            }
+        }
+        return updatedPosLeft;
+    }
+
+    public String botvBot(String coinflip) {
         System.out.println("inside botvbot");
         if (coinflip.equals("heads")) {
             System.out.println("Bot 1 will go first");
+            return "bot1";
         } else {
             System.out.println("Bot 2 will go first");
+            return "bot2";
         }
     }
 
-    public void playervBot(String coinflip) {
+    public String playervBot(String coinflip, Board board) {
         if (coinflip.equals("heads")) {
             System.out.println("Coin landed on heads! Player will go first");
+            return "player";
         } else {
             System.out.println("Coind landed on tails! Tbot will go first");
-        }
-
-        
+            return "bot";
+        }        
     }
 }

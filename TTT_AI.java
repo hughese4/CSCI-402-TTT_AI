@@ -59,34 +59,67 @@ public class TTT_AI {
         TTT_AI ttt = new TTT_AI();
         
         String coinResult = ttt.flipCoin();
+        String firstPlayer = "";
 
         // game type
         if (typeGame.equals("bot")) {
-            moveLogic.botvBot(coinResult);
+            firstPlayer = moveLogic.botvBot(coinResult);
         } else {
-            moveLogic.playervBot(coinResult);
+            firstPlayer = moveLogic.playervBot(coinResult, board);
         }
         
         // initialize and display board
-        board.printBoard();
+        
         int[] posLeft = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-        // player goes first
+        // assign 1 to first player, -1 to other player
         int currentPlayer = 1;
         int otherPlayer = -1;
 
         boolean gameover = false;
+        int userMove = (Integer) null; // might want to change these later
+        int botMove = (Integer) null;
+        String win = "";
+        
+        if (firstPlayer.equals("player")){
+            // game loop
+            while (!gameover) {
+                board.printBoard();
+                // Player's turn
+                userMove = moveLogic.userMove(posLeft);
+                board = board.updateBoard(board, userMove, currentPlayer);
+                posLeft = moveLogic.updatePosLeft(posLeft, userMove);
+                win = board.checkWin(board); // oop out
+                if (win != "no win") {
+                    gameover = true;
+                    System.out.println(win + " wins!");
+                    break;
+                }
 
-        // game loop
-        while (!gameover) {
-            // for now, start with user move
-            moveLogic.userMove(posLeft);
+                // Bot's turn
+                board.printBoard();
+                botMove = moveLogic.randomBotMove(posLeft);
+                board = board.updateBoard(board, botMove, otherPlayer);
+                posLeft = moveLogic.updatePosLeft(posLeft, botMove);
+                win = board.checkWin(board); // oop out
+                if (win != "no win") {
+                    gameover = true;
+                    System.out.println(win + " wins!");
+                    break;
+                }
+            }
+        } else if (firstPlayer.equals("bot")) {
+            // game loop
+            while (!gameover) {
+                botMove = moveLogic.randomBotMove(posLeft);
+                userMove = moveLogic.userMove(posLeft);
+            }
         }
     }
 
     public static void main(String[] args) {
         TTT_AI ttt = new TTT_AI();
         String typeGame = ttt.intro();
-        
+        ttt.playGame(typeGame);
     }
 }
