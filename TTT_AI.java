@@ -12,19 +12,19 @@ public class TTT_AI {
         boolean cont = true;
         // input checking, figure out how to handle all bad inputs later
         while (cont) {
-            System.out.println("Enter 1 to play against Tbot or 2 for bot v bot");
+            System.out.print("Enter 1 to play against Tbot or 2 for bot v bot\n> ");
             int choice = sc.nextInt();
 
             if (choice == 1) {
-                System.out.println("You have chosen to play against Tbot!");
-                System.out.println("A 'coin' will be flipped to determine who goes first");
-                sc.close();
+                System.out.println("\nYou have chosen to play against Tbot!");
+                System.out.println("A 'coin' will be flipped to determine who goes first\n");
+                
                 cont = false;
                 return "player";
             } else if (choice == 2) {
                 System.out.println("You have chosen to watch two bots play against each other!");
                 System.out.println("A 'coin' will be flipped to determine who goes first");
-                sc.close();
+                
                 cont = false;
                 return "bot";
             } else {
@@ -44,10 +44,8 @@ public class TTT_AI {
 
         // Display the result based on the random number
         if (randomNumber == 0) {
-            System.out.println("Heads");
             return "heads";
         } else {
-            System.out.println("Tails");
             return "tails";
         }
     }
@@ -57,6 +55,7 @@ public class TTT_AI {
         Board board = new Board(3);
         MoveLogic moveLogic = new MoveLogic();
         TTT_AI ttt = new TTT_AI();
+        Gameplay game = new Gameplay();
         
         String coinResult = ttt.flipCoin();
         String firstPlayer = "";
@@ -64,56 +63,21 @@ public class TTT_AI {
         // game type
         if (typeGame.equals("bot")) {
             firstPlayer = moveLogic.botvBot(coinResult);
+            game.gameLoopBVB(board, moveLogic, ttt, firstPlayer);
+
         } else {
             firstPlayer = moveLogic.playervBot(coinResult, board);
-        }
-        
-        // initialize and display board
-        
-        int[] posLeft = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+            game.gameLoopPVB(board, moveLogic, ttt, firstPlayer);
+        }   
+    }
 
-        // assign 1 to first player, -1 to other player
-        int currentPlayer = 1;
-        int otherPlayer = -1;
-
-        boolean gameover = false;
-        int userMove = (Integer) null; // might want to change these later
-        int botMove = (Integer) null;
-        String win = "";
-        
-        if (firstPlayer.equals("player")){
-            // game loop
-            while (!gameover) {
-                board.printBoard();
-                // Player's turn
-                userMove = moveLogic.userMove(posLeft);
-                board = board.updateBoard(board, userMove, currentPlayer);
-                posLeft = moveLogic.updatePosLeft(posLeft, userMove);
-                win = board.checkWin(board); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    break;
-                }
-
-                // Bot's turn
-                board.printBoard();
-                botMove = moveLogic.randomBotMove(posLeft);
-                board = board.updateBoard(board, botMove, otherPlayer);
-                posLeft = moveLogic.updatePosLeft(posLeft, botMove);
-                win = board.checkWin(board); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    break;
-                }
-            }
-        } else if (firstPlayer.equals("bot")) {
-            // game loop
-            while (!gameover) {
-                botMove = moveLogic.randomBotMove(posLeft);
-                userMove = moveLogic.userMove(posLeft);
-            }
+    public boolean checkTie(int[] posLeft, boolean gameover) {
+        // check tie (oop out later)
+        if (!gameover && posLeft.length == 0) {
+            System.out.println("It's a tie!");
+            return true;
+        } else {
+            return false;
         }
     }
 
