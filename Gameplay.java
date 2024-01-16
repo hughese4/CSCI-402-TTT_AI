@@ -21,9 +21,9 @@ public class Gameplay {
                 // Player's turn     
                 board.printBoard();           
                 userMove = moveLogic.userMove(posLeft);
-                board = board.updateBoard(board, userMove, currentPlayer);                
+                board = board.updateBoard(userMove, currentPlayer);                
                 posLeft = moveLogic.updatePosLeft(posLeft, userMove);
-                win = board.checkWin(board); // oop out
+                win = board.checkWin(posLeft); // oop out
                 if (win != "no win") {
                     gameover = true;
                     System.out.println(win + " wins!");
@@ -41,9 +41,9 @@ public class Gameplay {
                 board.printBoard();
                 System.out.println("Tbot makes its move...");
                 botMove = moveLogic.randomBotMove(posLeft);
-                board = board.updateBoard(board, botMove, otherPlayer);
+                board = board.updateBoard(botMove, otherPlayer);
                 posLeft = moveLogic.updatePosLeft(posLeft, botMove);
-                win = board.checkWin(board); // oop out
+                win = board.checkWin(); // oop out
                 if (win != "no win") {
                     gameover = true;
                     System.out.println(win + " wins!");
@@ -63,10 +63,10 @@ public class Gameplay {
                 // Bot's turn
                 System.out.println("Tbot makes its move...");                
                 botMove = moveLogic.randomBotMove(posLeft);
-                board = board.updateBoard(board, botMove, otherPlayer);
+                board = board.updateBoard(botMove, otherPlayer);
                 board.printBoard();
                 posLeft = moveLogic.updatePosLeft(posLeft, botMove);
-                win = board.checkWin(board); // oop out
+                win = board.checkWin(); // oop out
                 if (win != "no win") {
                     gameover = true;
                     System.out.println(win + " wins!");
@@ -81,10 +81,10 @@ public class Gameplay {
 
                 // Player's turn
                 userMove = moveLogic.userMove(posLeft);
-                board = board.updateBoard(board, userMove, currentPlayer);
+                board = board.updateBoard(userMove, currentPlayer);
                 board.printBoard();
                 posLeft = moveLogic.updatePosLeft(posLeft, userMove);
-                win = board.checkWin(board); // oop out
+                win = board.checkWin(); // oop out
                 if (win != "no win") {
                     gameover = true;
                     System.out.println(win + " wins!");
@@ -121,10 +121,10 @@ public class Gameplay {
             // Bot 1's turn
             System.out.println("Bot 1 makes its move...");                
             bot1Move = moveLogic.randomBotMove(posLeft);
-            board = board.updateBoard(board, bot1Move, currentPlayer);
+            board = board.updateBoard(bot1Move, currentPlayer);
             board.printBoard();
             posLeft = moveLogic.updatePosLeft(posLeft, bot1Move);
-            win = board.checkWin(board); // oop out
+            win = board.checkWin(); // oop out
 
             if (win != "no win") {
                 gameover = true;
@@ -141,10 +141,10 @@ public class Gameplay {
             // Bot 2's turn
             System.out.println("Bot 2 makes its move...");
             bot2Move = moveLogic.randomBotMove(posLeft);
-            board = board.updateBoard(board, bot2Move, otherPlayer);
+            board = board.updateBoard(bot2Move, otherPlayer);
             board.printBoard();
             posLeft = moveLogic.updatePosLeft(posLeft, bot2Move);
-            win = board.checkWin(board); // oop out
+            win = board.checkWin(); // oop out
             if (win != "no win") {
                 gameover = true;
                 System.out.println("Bot 2 wins!");

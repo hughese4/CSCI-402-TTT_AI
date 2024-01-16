@@ -69,4 +69,45 @@ public class MoveLogic {
         return 0;
     }
 
+    // public Coordinate getNegamaxMove(Token token) {
+    //     int score = -1;
+    //     Coordinate bestMove = null;
+
+    //     for (Coordinate move : Board.getAvailableMoves()) {
+    //         Result result = Board.makeMove(move, token);
+    //         int newScore = negamax(result, token);
+    //         Board.unmakeMove(move);
+    
+    //         if (newScore >= score) {
+    //             score = newScore;
+    //             bestMove = move;
+    //         }
+    //     }
+    
+    //     return bestMove;
+    // }
+
+
+    // public int negamax(Result result, Token token) {
+    //     if (result == Result.WIN) {
+    //         return 1;
+    //     } else if (result == Result.Draw) {
+    //         return 0;
+    //     }
+
+    //     int worst = 1;
+
+    //     Token other = token.getOther();
+    //     for (Coordinate move : Board.getAvailableMoves()) {
+    //         Result r = Board.makeMove(move, other);
+    //         int eval = -negamax(r, other);
+    //         Board.unmakeMove(move);
+
+    //         if (eval < worst) {
+    //             worst = eval;
+    //         }
+    //     }
+
+    //     return worst;
+    // }
 }

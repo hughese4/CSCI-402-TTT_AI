@@ -52,7 +52,7 @@ public class TTT_AI {
 
     // Gameplay loop
     public void playGame(String typeGame) {
-        Board board = new Board(3);
+        Board board = new Board();
         MoveLogic moveLogic = new MoveLogic();
         TTT_AI ttt = new TTT_AI();
         Gameplay game = new Gameplay();
