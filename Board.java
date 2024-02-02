@@ -1,3 +1,4 @@
+
 public class Board {
 
     private static final int SIZE = 3;
@@ -8,57 +9,61 @@ public class Board {
         this.board = new int[SIZE][SIZE];
     }
     
+    // constructor for cloning the board
+    private Board(int[][] state) {
+        this.board = new int[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            System.arraycopy(state[i], 0, this.board[i], 0, SIZE);
+        }
+    }
+
     public int[][] getBoard() {
         return this.board;
     }
 
+    // This creates a new Board instance with the updated move
     public Board updateBoard(int moveIndex, int currentPlayer) {
         int row = moveIndex / SIZE;
         int col = moveIndex % SIZE;
-        this.board[row][col] = currentPlayer;
-        return this;
+        Board newBoard = new Board(this.board);
+        newBoard.board[row][col] = currentPlayer;
+        return newBoard;
     }
 
     public void printBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(board[i][j] + "  ");
             }
             System.out.println();
         }
         System.out.println();
     }
 
-    public String checkWin(int[] posLeft) {
-        // Check rows, columns, and diagonals for a win
-        for (int i = 0; i < SIZE; i++) {
-            String rowResult = checkLine(board[i][0], board[i][1], board[i][2]);
-            if (!rowResult.equals("no win")) {
-                return rowResult;
-            }
-
-            String colResult = checkLine(board[0][i], board[1][i], board[2][i]);
-            if (!colResult.equals("no win")) {
-                return colResult;
-            }
-        }
-
-        String diagonalResult = checkLine(board[0][0], board[1][1], board[2][2]);
-        if (!diagonalResult.equals("no win")) {
-            return diagonalResult;
-        }
-
-        if (posLeft.length == 0) {
-            return "tie";
-        }
-        return "no win";
+    public int eval() {
+        if(isWinner(1))
+            return 1;
+        else if(isWinner(2))
+            return -1;
+        else
+            return 0;
     }
 
-    private String checkLine(int cell1, int cell2, int cell3) {
-        int sum = cell1 + cell2 + cell3;
-        if (Math.abs(sum) == SIZE) {
-            return (sum > 0) ? "player" : "bot";
+    private boolean isWinner(int player) {
+        // Check rows and columns
+        for (int i = 0; i < SIZE; i++) {
+            if ((board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] == player) ||
+                (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] == player)) {
+                return true;
+            }
         }
-        return "no win";
+
+        // Check diagonals
+        if ((board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] == player) ||
+            (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] == player)) {
+            return true;
+        }
+
+        return false;
     }
 }

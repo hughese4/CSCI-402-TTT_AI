@@ -23,19 +23,13 @@ public class Gameplay {
                 userMove = moveLogic.userMove(posLeft);
                 board = board.updateBoard(userMove, currentPlayer);                
                 posLeft = moveLogic.updatePosLeft(posLeft, userMove);
-                win = board.checkWin(posLeft); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    board.printBoard();
-                    break;
-                }
-
-                tie = ttt.checkTie(posLeft, gameover);
-                if (tie) {
-                    board.printBoard();
-                    break;
-                }
+                // win = board.checkWin(posLeft); // oop out
+                // if (win != "no win") {
+                //     gameover = true;
+                //     System.out.println(win);
+                //     board.printBoard();
+                //     break;
+                // }
 
                 // Bot's turn
                 board.printBoard();
@@ -43,19 +37,13 @@ public class Gameplay {
                 botMove = moveLogic.randomBotMove(posLeft);
                 board = board.updateBoard(botMove, otherPlayer);
                 posLeft = moveLogic.updatePosLeft(posLeft, botMove);
-                win = board.checkWin(); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    board.printBoard();
-                    break;
-                }
-                
-                tie = ttt.checkTie(posLeft, gameover);
-                if (tie) {
-                    board.printBoard();
-                    break;
-                }
+                // win = board.checkWin(posLeft); // oop out
+                // if (win != "no win") {
+                //     gameover = true;
+                //     System.out.println(win);
+                //     board.printBoard();
+                //     break;
+                // }
             }
         } else if (firstPlayer.equals("bot")) {
             // game loop
@@ -66,36 +54,24 @@ public class Gameplay {
                 board = board.updateBoard(botMove, otherPlayer);
                 board.printBoard();
                 posLeft = moveLogic.updatePosLeft(posLeft, botMove);
-                win = board.checkWin(); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    break;
-                }
-
-                tie = ttt.checkTie(posLeft, gameover);
-                if (tie) {
-                    board.printBoard();
-                    break;
-                }
+                // win = board.checkWin(posLeft); // oop out
+                // if (win != "no win") {
+                //     gameover = true;
+                //     System.out.println(win);
+                //     break;
+                // }
 
                 // Player's turn
                 userMove = moveLogic.userMove(posLeft);
                 board = board.updateBoard(userMove, currentPlayer);
                 board.printBoard();
                 posLeft = moveLogic.updatePosLeft(posLeft, userMove);
-                win = board.checkWin(); // oop out
-                if (win != "no win") {
-                    gameover = true;
-                    System.out.println(win + " wins!");
-                    break;
-                }
-
-                tie = ttt.checkTie(posLeft, gameover);
-                if (tie) {
-                    board.printBoard();
-                    break;
-                }
+            //     win = board.checkWin(posLeft); // oop out
+            //     if (win != "no win") {
+            //         gameover = true;
+            //         System.out.println(win);
+            //         break;
+            //     }
             }
         }
     }
@@ -115,47 +91,36 @@ public class Gameplay {
         String win = "";
         boolean tie = false;
 
-        
+               
         // game loop
         while (!gameover) {
             // Bot 1's turn
             System.out.println("Bot 1 makes its move...");                
-            bot1Move = moveLogic.randomBotMove(posLeft);
+            bot1Move = moveLogic.negaMax(1, board, posLeft);
             board = board.updateBoard(bot1Move, currentPlayer);
             board.printBoard();
             posLeft = moveLogic.updatePosLeft(posLeft, bot1Move);
-            win = board.checkWin(); // oop out
+            // win = board.eval(posLeft); // oop out
 
-            if (win != "no win") {
-                gameover = true;
-                System.out.println("Bot 1 wins!");
-                break;
-            }
+            // if (win != "no win") {
+            //     gameover = true;
+            //     System.out.println(win);
+            //     break;
+            // }
 
-            tie = ttt.checkTie(posLeft, gameover);
-            if (tie) {
-                board.printBoard();
-                break;
-            }
-
+            
             // Bot 2's turn
             System.out.println("Bot 2 makes its move...");
             bot2Move = moveLogic.randomBotMove(posLeft);
             board = board.updateBoard(bot2Move, otherPlayer);
             board.printBoard();
             posLeft = moveLogic.updatePosLeft(posLeft, bot2Move);
-            win = board.checkWin(); // oop out
-            if (win != "no win") {
-                gameover = true;
-                System.out.println("Bot 2 wins!");
-                break;
-            }
-            
-            tie = ttt.checkTie(posLeft, gameover);
-            if (tie) {
-                board.printBoard();
-                break;
-            }
+            // win = board.checkWin(posLeft); // oop out
+            // if (win != "no win") {
+            //     gameover = true;
+            //     System.out.println(win);
+            //     break;
+            // }
         }
     } 
 

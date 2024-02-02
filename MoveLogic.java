@@ -2,6 +2,12 @@ import java.util.*;
 
 public class MoveLogic {
 
+    Board board = new Board();
+
+    public MoveLogic() {
+        this.board = new Board();
+    }
+
     // made by copilot
     public int[] updatePosLeft(int[] posLeft, int move) {
         int[] updatedPosLeft = new int[posLeft.length - 1];
@@ -69,45 +75,47 @@ public class MoveLogic {
         return 0;
     }
 
-    // public Coordinate getNegamaxMove(Token token) {
-    //     int score = -1;
-    //     Coordinate bestMove = null;
+    public int[] negaMax(int p, Board state, int[] posLeft) {
+        int move = -1;
+        
+        // game over
+        int reward = board.eval(state);
+        if (reward != 0) {
+            return new int[] {reward, move};
+        }
+        // game not over; check each sub board
+        int bestValue = 0;
+        // player 1 (comp or person)
+        if (p == 1) {
+            bestValue = Integer.MIN_VALUE;
+            for (int i = 0; i < posLeft.length; i++) {
+                int[] tempState = new int[9];
+                System.arraycopy(state, 0, tempState, 0, state.length);
+                tempState[posLeft[i]] = p;
+                
+                int val = negaMax(2, tempState, updatePosLeft(posLeft, posLeft[i]))[0];
+                if (val > bestValue) {
+                    bestValue = val;
+                    move = posLeft[i];
+                }
+            }
+        }
+        // player 2
+        else {
+            bestValue = Integer.MAX_VALUE;
+            for (int i = 0; i < posLeft.length; i++) {
+                int[] tempState = new int[9];
+                System.arraycopy(state, 0, tempState, 0, state.length);
+                tempState[posLeft[i]] = p;
+                
+                int val = negaMax(1, tempState, updatePosLeft(posLeft, posLeft[i]))[0];
+                if (val < bestValue) {
+                    bestValue = val;
+                    move = posLeft[i];
+                }
+            }
+        }
+        return (new int[] { bestValue, move });
+    }
 
-    //     for (Coordinate move : Board.getAvailableMoves()) {
-    //         Result result = Board.makeMove(move, token);
-    //         int newScore = negamax(result, token);
-    //         Board.unmakeMove(move);
-    
-    //         if (newScore >= score) {
-    //             score = newScore;
-    //             bestMove = move;
-    //         }
-    //     }
-    
-    //     return bestMove;
-    // }
-
-
-    // public int negamax(Result result, Token token) {
-    //     if (result == Result.WIN) {
-    //         return 1;
-    //     } else if (result == Result.Draw) {
-    //         return 0;
-    //     }
-
-    //     int worst = 1;
-
-    //     Token other = token.getOther();
-    //     for (Coordinate move : Board.getAvailableMoves()) {
-    //         Result r = Board.makeMove(move, other);
-    //         int eval = -negamax(r, other);
-    //         Board.unmakeMove(move);
-
-    //         if (eval < worst) {
-    //             worst = eval;
-    //         }
-    //     }
-
-    //     return worst;
-    // }
 }
