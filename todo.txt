@@ -1,3 +1,19 @@
 - Refactor files to remove redunant logic
 - Rewrite win condition logic
 - Finish implementing Negamax algorithm
+
+
+This evaluateBoardHeuristic function starts by granting a large score for a win or a significant penalty 
+for a loss. Then it evaluates each row, column, and diagonal for potential victories or needs to block the 
+opponent.
+
+The evaluateLine function assesses individual lines and rewards lines where the player is near victory 
+and penalizes lines where the opponent is near victory.
+
+The scores for the center and corners are added because these are typically strategic positions. 
+The CENTER_SCORE and CORNER_SCORE values are somewhat arbitrary; you might fine-tune these based 
+on your AI's performance.
+
+Since the evaluate function is now using methods of the Board class, you may need to make some public 
+methods which are currently private if they are required by the evaluateBoardHeuristic method from the 
+MoveLogic class.

@@ -1,89 +1,59 @@
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 
-// driver class for the Tic Tac Toe AI
+// Main driver class for Tic Tac Toe game with AI
 public class TTT_AI {
 
-    public String intro() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to E's tic tac toe AI!");
-        System.out.println("This AI is unbeatable, so good luck!");
-        System.out.println("Would you like Tbot to play against you or another bot?");
-        
-        boolean cont = true;
-        // input checking, figure out how to handle all bad inputs later
-        while (cont) {
-            System.out.print("Enter 1 to play against Tbot or 2 for bot v bot\n> ");
-            int choice = sc.nextInt();
+    private static int PLAYER_X = 1; // assume X is maximizer
+    private static int PLAYER_O = -1; // O is minimizer
 
-            if (choice == 1) {
-                System.out.println("\nYou have chosen to play against Tbot!");
-                System.out.println("A 'coin' will be flipped to determine who goes first\n");
-                
-                cont = false;
-                return "player";
-            } else if (choice == 2) {
-                System.out.println("You have chosen to watch two bots play against each other!");
-                System.out.println("A 'coin' will be flipped to determine who goes first");
-                
-                cont = false;
-                return "bot";
-            } else {
-                System.out.println("Wrong input, try again.");
-                cont = true;
-            }
-        }
-        return null;
+    public static String intro(Scanner scanner) {
+        System.out.println("Welcome to Tic Tac Toe AI!");
+        String input;
+        do {
+            System.out.print("Enter '1' to play or '2' for AI vs AI: ");
+            input = scanner.nextLine();
+        } while (!input.equals("1") && !input.equals("2"));
+
+        return input.equals("1") ? "player" : "ai";
     }
 
-    public String flipCoin() {
-        // Create a Random object
-        Random random = new Random();
-
-        // Generate a random number (0 or 1)
-        int randomNumber = random.nextInt(2);
-
-        // Display the result based on the random number
-        if (randomNumber == 0) {
-            return "heads";
-        } else {
-            return "tails";
-        }
+    public static String flipCoin(Random random) {
+        return random.nextBoolean() ? "heads" : "tails";
     }
 
-    // Gameplay loop
-    public void playGame(String typeGame) {
+    public static void playGame(String gameType, Scanner scanner, Random random) {
         Board board = new Board();
         MoveLogic moveLogic = new MoveLogic();
-        TTT_AI ttt = new TTT_AI();
-        Gameplay game = new Gameplay();
-        
-        String coinResult = ttt.flipCoin();
-        String firstPlayer = "";
 
-        // game type
-        if (typeGame.equals("bot")) {
-            firstPlayer = moveLogic.botvBot(coinResult);
-            game.gameLoopBVB(board, moveLogic, ttt, firstPlayer);
+        int currentPlayer = flipCoin(random).equals("heads") ? PLAYER_X : PLAYER_O;
+        boolean gameOver = false;
 
-        } else {
-            firstPlayer = moveLogic.playervBot(coinResult, board);
-            game.gameLoopPVB(board, moveLogic, ttt, firstPlayer);
-        }   
-    }
+        while (!gameOver) {
+            board.printBoard();
 
-    public boolean checkTie(int[] posLeft, boolean gameover) {
-        // check tie (oop out later)
-        if (!gameover && posLeft.length == 0) {
-            System.out.println("It's a tie!");
-            return true;
-        } else {
-            return false;
+            // Player's or AI's move
+            int move;
+            if ((currentPlayer == PLAYER_X && gameType.equals("player")) ||
+                (currentPlayer == PLAYER_O && gameType.equals("ai"))) {
+                move = moveLogic.userMove(board, scanner);
+            } else {
+                move = moveLogic.randomMove(board); // Placeholder for AI move
+                System.out.println("AI makes its move...");
+            }
+            board.makeMove(move, currentPlayer);
+
+            gameOver = board.isGameOver();
+
+            // Switch player
+            currentPlayer = -currentPlayer;
         }
-    }
 
-    public static void main(String[] args) {
-        TTT_AI ttt = new TTT_AI();
-        String typeGame = ttt.intro();
-        ttt.playGame(typeGame);
+        board.printBoard();
+        if (board.hasWinner(-currentPlayer)) {
+            System.out.println(((currentPlayer == PLAYER_X) ? "X" : "O") + " wins!");
+        } else {
+            System.out.println("It's a draw!");
+        }
     }
 }
