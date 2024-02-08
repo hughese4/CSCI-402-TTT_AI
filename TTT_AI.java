@@ -6,12 +6,13 @@ public class TTT_AI {
 
     private static int PLAYER_X = 1; // assume X is maximizer
     private static int PLAYER_O = -1; // O is minimizer
+    private static int DEPTH = 3; // maximum depth for negamax
 
     public static String intro(Scanner scanner) {
         System.out.println("Welcome to Tic Tac Toe AI!");
         String input;
         do {
-            System.out.print("Enter '1' to play or '2' for AI vs AI: ");
+            System.out.print("Enter '1' to play vs AI or '2' for AI vs AI: ");
             input = scanner.nextLine();
         } while (!input.equals("1") && !input.equals("2"));
 
@@ -26,7 +27,13 @@ public class TTT_AI {
         Board board = new Board();
         MoveLogic moveLogic = new MoveLogic();
 
+        System.out.println("A coin is flipped to decide who goes first.");
         int currentPlayer = flipCoin(random).equals("heads") ? PLAYER_X : PLAYER_O;
+        if (currentPlayer == PLAYER_X) {
+            System.out.println("X goes first.");
+        } else {
+            System.out.println("O goes first.");
+        }
         boolean gameOver = false;
 
         while (!gameOver) {
@@ -34,11 +41,14 @@ public class TTT_AI {
 
             // Player's or AI's move
             int move;
-            if ((currentPlayer == PLAYER_X && gameType.equals("player")) ||
-                (currentPlayer == PLAYER_O && gameType.equals("ai"))) {
+            if ((currentPlayer == PLAYER_X && gameType.equals("player"))) {
                 move = moveLogic.userMove(board, scanner);
+            // might not need this elif
+            } else if ((currentPlayer == PLAYER_O && gameType.equals("ai"))) {
+                move = moveLogic.negamax(board, currentPlayer, DEPTH).position; // AI move
+                System.out.println("AI makes its move...");                        
             } else {
-                move = moveLogic.randomMove(board); // Placeholder for AI move
+                move = moveLogic.negamax(board, currentPlayer, DEPTH).position; // AI move
                 System.out.println("AI makes its move...");
             }
             board.makeMove(move, currentPlayer);

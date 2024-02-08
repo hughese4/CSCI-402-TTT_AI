@@ -115,7 +115,7 @@ public class MoveLogic {
         return score;
     }
 
-    private static class Move {
+    public static class Move {
         int position;
         int value;
 
